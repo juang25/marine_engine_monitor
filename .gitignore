@@ -1,3 +1,9 @@
-.pio/
-.vscode/
+firmware/.pio/
+firmware/.vscode/
+# environment variables
 .env
+
+
+# Mosquitto runtime
+backend/mosquitto/data/
+backend/mosquitto/log/
