@@ -7,3 +7,6 @@ firmware/.vscode/
 # Mosquitto runtime
 backend/mosquitto/data/
 backend/mosquitto/log/
+
+backend/mosquitto/data/
+backend/mosquitto/log/
