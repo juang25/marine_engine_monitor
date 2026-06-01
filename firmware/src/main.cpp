@@ -8,6 +8,7 @@
 #include "sensor_data.h"
 #include "sensors.h"
 #include "RPMSensor.h"
+#include "webserver.h"
 
 unsigned long lastMsg = 0;
 
@@ -30,6 +31,8 @@ void setup()
 
     setupMQTT();
 
+    setupWebServer();
+
     Serial.println("System initialized");
 }
 
@@ -48,4 +51,6 @@ void loop()
     handleSensors(now, data);
 
     handlePublish(now, data);
+
+    handleWebServer();
 }
