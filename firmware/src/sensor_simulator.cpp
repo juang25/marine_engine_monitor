@@ -24,6 +24,6 @@ void updateSimulation(EngineData &data)
         }
     }
     data.rpm = rpm;
-    data.coolantTemp = 60 + (rpm / 100.0);
+    data.exhaustTemp = 60 + (rpm / 100.0);
     data.batteryVoltage = 13.8 - (rpm * 0.0001);
 }

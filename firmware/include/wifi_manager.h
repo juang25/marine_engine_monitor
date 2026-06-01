@@ -1,6 +1,5 @@
-#ifndef WIFI_MANAGER_H
-#define WIFI_MANAGER_H
+#pragma once
 
 void setupWiFi();
-
-#endif
+void handleWiFi(unsigned long now);
+unsigned long wifiConnectedSinceMs();

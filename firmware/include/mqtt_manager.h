@@ -1,12 +1,14 @@
-#ifndef MQTT_MANAGER_H
-#define MQTT_MANAGER_H
-#include <PubSubClient.h>
+#pragma once
 
-extern PubSubClient client;
+#include "sensor_data.h"
 
 void setupMQTT();
-void reconnectMQTT();
-void publishTestMessage();
-void mqttLoop();
 
-#endif
+void handleMQTT(unsigned long now);
+
+void handlePublish(
+    unsigned long now,
+    const EngineData& data
+);
+
+void mqttLoop();

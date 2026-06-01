@@ -4,9 +4,11 @@
 struct EngineData
 {
     float rpm;
-    float coolantTemp;
-    float oilPressure;
+    float exhaustTemp;
     float batteryVoltage;
+    float engineRoomTemp;
+    float engineRoomHumidity;
+    bool alarmInputActive;
 };
 
 #endif
