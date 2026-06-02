@@ -1,5 +1,6 @@
 #include "mqtt_manager.h"
 #include "wifi_manager.h"
+#include "log_buffer.h"
 
 #include <WiFi.h>
 #include <PubSubClient.h>
@@ -145,9 +146,5 @@ static void publishData(const EngineData &data)
         "boat/engine/data",
         buffer);
 
-    Serial.print("[MQTT] Published: ");
-
-    Serial.print(buffer);
-
-    Serial.println();
+    logPrintf("[MQTT] Published: %s\n", buffer);
 }

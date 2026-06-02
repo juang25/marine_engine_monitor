@@ -6,6 +6,7 @@
 #include <SensirionI2cSht4x.h>
 #include <Adafruit_INA219.h>
 #include "rpmsensor.h"
+#include "log_buffer.h"
 
 Adafruit_INA219 ina219;
 extern RPMSensor rpmSensor;
@@ -154,8 +155,10 @@ void handleSensors(
 
     updateSensors(data);
 
-    Serial.printf(
-        "T codo: %.2f ºC  Temp: %.2f ºC  Hum: %.2f  V Bat: %.2f V RPM: %.2f rpm  Alarma: %s\n",
+    logPrintf(
+        "T codo: %.2f \xc2\xba"
+        "C  Temp: %.2f \xc2\xba"
+        "C  Hum: %.2f  V Bat: %.2f V RPM: %.2f rpm  Alarma: %s\n",
         data.exhaustTemp,
         data.engineRoomTemp,
         data.engineRoomHumidity,

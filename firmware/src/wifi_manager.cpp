@@ -1,10 +1,23 @@
 #include "wifi_manager.h"
+#include "log_buffer.h"
 #include <WiFi.h>
 
-const char *ssid = "ASUS";
-const char *password = "IX1V7602698AD494935";
+typedef struct
+{
+    const char *ssid;
+    const char *password;
+} WifiNet;
+
+static const WifiNet networks[] = {
+    {"ASUS", "IX1V7602698AD494935"},
+    {"pamara_barco_2", "FC51679400"},
+};
+
+static const int numNetworks = sizeof(networks) / sizeof(networks[0]);
+static int currentNet = 0;
 
 static void connectWiFi();
+static void nextWiFi();
 static const char *wifiStatusName(wl_status_t status);
 unsigned long wifiConnectedSince = 0;
 
@@ -28,15 +41,10 @@ void handleWiFi(unsigned long now)
         if (!wasConnected)
         {
             wifiConnectedSince = now;
-            Serial.print("[WiFi] Connected, IP=");
-            Serial.println(WiFi.localIP());
-            Serial.print("[WiFi] Gateway=");
-            Serial.println(WiFi.gatewayIP());
-            Serial.print("[WiFi] Subnet=");
-            Serial.println(WiFi.subnetMask());
-            Serial.print("[WiFi] RSSI=");
-            Serial.print(WiFi.RSSI());
-            Serial.println(" dBm");
+            logPrintf("[WiFi] Connected, IP=%s\r\n", WiFi.localIP().toString().c_str());
+            logPrintf("[WiFi] Gateway=%s\r\n", WiFi.gatewayIP().toString().c_str());
+            logPrintf("[WiFi] Subnet=%s\r\n", WiFi.subnetMask().toString().c_str());
+            logPrintf("[WiFi] RSSI=%d dBm\r\n", WiFi.RSSI());
             wasConnected = true;
         }
 
@@ -52,18 +60,28 @@ void handleWiFi(unsigned long now)
 
     lastAttempt = now;
 
-    Serial.print("[WiFi] Disconnected, status=");
-    Serial.println(wifiStatusName(WiFi.status()));
+    logPrintf("[WiFi] Disconnected, status=%s\r\n", wifiStatusName(WiFi.status()));
 
-    connectWiFi();
+    nextWiFi();
 }
 
 static void connectWiFi()
 {
-    Serial.print("[WiFi] Connecting to ");
-    Serial.println(ssid);
+    Serial.print("[WiFi] Trying net ");
+    Serial.print(currentNet);
+    Serial.print(": ");
+    Serial.println(networks[currentNet].ssid);
 
-    WiFi.begin(ssid, password);
+    WiFi.begin(networks[currentNet].ssid, networks[currentNet].password);
+}
+
+static void nextWiFi()
+{
+    if (WiFi.isConnected())
+        return;
+
+    currentNet = (currentNet + 1) % numNetworks;
+    connectWiFi();
 }
 
 unsigned long wifiConnectedSinceMs()
